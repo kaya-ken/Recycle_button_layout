@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#F0F8FF</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#FFEBCD</color>
+    <color name="TappedButton">#FFA550</color>
+    <color name="DefaultButton">#FFEBD7</color>
+</resources>
