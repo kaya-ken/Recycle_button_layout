@@ -1,5 +1,6 @@
 package com.websarva.wings.android.recycle_button_layout;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,14 +12,23 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.support.v4.app.Fragment;
+import android.widget.Toast;
 
 
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Call;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity implements ConfirmDialog.MainFragmentListener {
 
     private String sort_menu[] = {"人気順", "価格順", "新着順"};
     private List<Menu> menuList;
@@ -90,11 +100,14 @@ public class MainActivity extends AppCompatActivity {
                         Menu item = menuList.get(position);
 
                         ConfirmDialog dialog = new ConfirmDialog();
+
                         Bundle bundle = new Bundle();
                         bundle.putString("Name",item.getMenuName());
                         bundle.putInt("Price",item.getMenuPrice());
                         dialog.setArguments(bundle);
-                        dialog.show(getSupportFragmentManager(), "sample");
+
+//                        dialog.setTargetFragment(MainActivity, 100);
+                        dialog.show(getSupportFragmentManager(), "purchase_confirm_dialog");
                     }
                 });
                 return  holder_;
@@ -120,4 +133,36 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    public void onActivityResult(final int _requestCode, final int _resultCode, final Intent _data){
+        if(_requestCode == 100){
+            if(_resultCode == DialogInterface.BUTTON_POSITIVE){
+                // positive_button
+                String url_ = "https://www.google.com";
+                OkHttpClient client_ = new OkHttpClient();
+
+                Request request_ = new Request.Builder().url(url_).build();
+                Call call_ = client_.newCall(request_);
+                try {
+                    Response response_ = call_.execute();
+                    System.out.println(response_.body().string());
+                }
+                catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+            else if(_resultCode == DialogInterface.BUTTON_NEGATIVE){
+                // negative_button
+            }
+        }
+    }
+
+    @Override
+    public void onNextButtonClicked(){
+        // positive_button
+        String url_ = "http://192.168.189.1:8084";
+        OkHttpClient client_ = new OkHttpClient();
+        RequestBody requestBody_ = RequestBody.create(MediaType.parse("text/plain"), "Hello");
+        Request request = new Request.Builder().url(url_).post(requestBody_).build();
+    }
 }

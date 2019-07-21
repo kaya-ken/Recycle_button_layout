@@ -1,6 +1,7 @@
 package com.websarva.wings.android.recycle_button_layout;
 
 import android.content.Intent;
+import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -23,7 +24,7 @@ public class QRCodeReader extends AppCompatActivity {
         IntentIntegrator integrator = new IntentIntegrator(QRCodeReader.this);
 
         //フロントカメラを使用する
-        //integrator.setCameraId(Camera.CameraInfo.CAMERA_FACING_FRONT);
+        integrator.setCameraId(Camera.CameraInfo.CAMERA_FACING_FRONT);
 
         //読み取り音を消す
         integrator.setBeepEnabled(false);
