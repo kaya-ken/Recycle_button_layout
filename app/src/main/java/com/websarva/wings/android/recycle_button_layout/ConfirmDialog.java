@@ -50,10 +50,10 @@ public class ConfirmDialog extends DialogFragment {
                  */
 
                 //メニューを閉じてQRコード読み取り画面へ戻る
-                if (getActivity() != null) {
-                    QRCodeReader.mFlag.setFinishFlg(true);
-                    getActivity().finish();
-                }
+//                if (getActivity() != null) {
+//                    QRCodeReader.mFlag.setFinishFlg(true);
+//                    getActivity().finish();
+//                }
             }
         });
 
