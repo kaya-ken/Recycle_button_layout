@@ -1,10 +1,13 @@
 package com.websarva.wings.android.recycle_button_layout;
 
 import android.content.Context;
+import android.hardware.SensorEvent;
 import android.support.v4.content.AsyncTaskLoader;
 import android.widget.Toast;
 
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -26,6 +29,7 @@ public class ConnectSocketAsyncTaskLoader extends AsyncTaskLoader<String> {
     public String loadInBackground(){
         if(!isLoadInBackgroundCanceled()){
             try{
+                String output_;
                 InetSocketAddress endPoint_ = new InetSocketAddress(ipAddress, 8084);
                 Socket sender_ = new Socket();
 
@@ -34,6 +38,11 @@ public class ConnectSocketAsyncTaskLoader extends AsyncTaskLoader<String> {
                     PrintWriter pw_ = new PrintWriter(sender_.getOutputStream(), true);
                     pw_.println(sendMessage);
                     pw_.close();
+
+                    InputStream socketInputStream_ = sender_.getInputStream();
+                    DataInputStream dataInputStream_ = new DataInputStream(socketInputStream_);
+                    output_ = dataInputStream_.readUTF();
+                    System.out.println(output_);
                 }
                 sender_.close();
 
