@@ -180,8 +180,7 @@ public class MainActivity extends AppCompatActivity implements ConfirmDialog.Mai
 
     @Override
     public void onNextButtonClicked(){
-        System.out.println("onClicked");
-        String ipAddress_ = "192.168.189.1";
+        String ipAddress_ = "172.20.75.245";
         String mySlackID_ = "NB29979";
 
         Bundle bundle_ = new Bundle();
@@ -189,10 +188,5 @@ public class MainActivity extends AppCompatActivity implements ConfirmDialog.Mai
         bundle_.putString("DATA", mySlackID_);
 
         getSupportLoaderManager().restartLoader(0, bundle_, callbacks);
-//        // positive_button
-//        String url_ = "http://192.168.189.1:8084";
-//        OkHttpClient client_ = new OkHttpClient();
-//        RequestBody requestBody_ = RequestBody.create(MediaType.parse("text/plain"), "Hello");
-//        Request request = new Request.Builder().url(url_).post(requestBody_).build();
     }
 }

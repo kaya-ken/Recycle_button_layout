@@ -43,13 +43,7 @@ public class ConfirmDialog extends DialogFragment {
                 }
                 mainFragmentListener_.onNextButtonClicked();
 
-//                getParentFragment().onActivityResult(getTargetRequestCode(), which, intent_);
-
-//                SendingStart(menuName);
-                /*
-                 */
-
-                //メニューを閉じてQRコード読み取り画面へ戻る
+//                //メニューを閉じてQRコード読み取り画面へ戻る
 //                if (getActivity() != null) {
 //                    QRCodeReader.mFlag.setFinishFlg(true);
 //                    getActivity().finish();
@@ -69,32 +63,4 @@ public class ConfirmDialog extends DialogFragment {
         // dialogBuilderを返す
         return confirm.create();
     }
-
-
-
-//    public void SendingStart(String SendData){
-//        String ipAddress = "172.20.75.181";
-//        String mySlackID = "UC138FKKQ";/*kayahara's ID*/
-//
-//        Bundle bundle_ = new Bundle();
-//        bundle_.putString("IP_ADDRESS", ipAddress);
-//        bundle_.putString("DATA", SendData);
-//        getSupportLoaderManager().restartLoader(1, bundle_, callbacks);
-//    }
-//    private final LoaderManager.LoaderCallbacks<String> callbacks = new LoaderManager.LoaderCallbacks<String>() {
-//        @NonNull
-//        @Override
-//        public Loader<String> onCreateLoader(int i, @Nullable Bundle bundle) {
-//            return new ConnectSocketAsyncTaskLoader(getApplicationContext(),
-//                    bundle.getString("IP_ADDRESS"), bundle.getString("DATA"));
-//        }
-//
-//        @Override
-//        public void onLoadFinished(@NonNull Loader<String> loader, String s) {
-//            getSupportLoaderManager().destroyLoader(loader.getId());
-//        }
-//
-//        @Override
-//        public void onLoaderReset(@NonNull Loader<String> loader) { }
-//    };
 }
