@@ -9,7 +9,7 @@ class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
     TextView menuView;
     TextView priceView;
-    TextView order_countView;
+    TextView orderedCountView;
     TextView dateView;
     ImageView imageView;
 
@@ -17,7 +17,7 @@ class RecyclerViewHolder extends RecyclerView.ViewHolder {
         super(_view);
         menuView = _view.findViewById(R.id.txv_menu);
         priceView = _view.findViewById(R.id.txv_price);
-        order_countView = _view.findViewById(R.id.txv_count);
+        orderedCountView = _view.findViewById(R.id.txv_count);
         dateView = _view.findViewById(R.id.txv_date);
         imageView = _view.findViewById(R.id.txv_image);
     }

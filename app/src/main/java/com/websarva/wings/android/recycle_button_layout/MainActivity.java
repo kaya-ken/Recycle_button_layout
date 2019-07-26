@@ -19,7 +19,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements ConfirmDialog.MainFragmentListener {
+public class MainActivity extends AppCompatActivity implements ConfirmOrderDialog.MainFragmentListener {
 
     private String sort_menu[] = {"人気順", "価格順", "新着順"};
     private List<Menu> menuList;
@@ -90,11 +90,11 @@ public class MainActivity extends AppCompatActivity implements ConfirmDialog.Mai
                         final int position = holder_.getAdapterPosition();
                         Menu item = menuList.get(position);
 
-                        ConfirmDialog dialogFragment = new ConfirmDialog();
+                        ConfirmOrderDialog dialogFragment = new ConfirmOrderDialog();
 
                         Bundle bundle = new Bundle();
-                        bundle.putString("Name",item.getMenuName());
-                        bundle.putInt("Price",item.getMenuPrice());
+                        bundle.putString("Name",item.getName());
+                        bundle.putInt("Price",item.getPrice());
                         dialogFragment.setArguments(bundle);
 
 //                        dialog.setTargetFragment(MainActivity, 100);

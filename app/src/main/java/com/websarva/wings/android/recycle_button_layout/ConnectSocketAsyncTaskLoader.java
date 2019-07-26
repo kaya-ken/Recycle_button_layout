@@ -15,8 +15,8 @@ public class ConnectSocketAsyncTaskLoader extends AsyncTaskLoader<String> {
     private String ipAddress;
     private String sendMessage;
 
-    private String mResult;
-    private boolean mIsStarted = false;
+    private String result;
+    private boolean isStarted = false;
 
     ConnectSocketAsyncTaskLoader(Context _context, String _ipAddress, String _sendMessage){
         super(_context);
@@ -58,11 +58,11 @@ public class ConnectSocketAsyncTaskLoader extends AsyncTaskLoader<String> {
     }
     @Override
     protected void onStartLoading(){
-        if(mResult != null){
-            deliverResult(mResult);
+        if(result != null){
+            deliverResult(result);
             return;
         }
-        if(!mIsStarted || takeContentChanged()) forceLoad();
+        if(!isStarted || takeContentChanged()) forceLoad();
 
         super.onStartLoading();
         forceLoad();
@@ -70,11 +70,11 @@ public class ConnectSocketAsyncTaskLoader extends AsyncTaskLoader<String> {
     @Override
     protected void onForceLoad(){
         super.onForceLoad();
-        mIsStarted = true;
+        isStarted = true;
     }
     @Override
     public void deliverResult(String _data){
-        mResult = _data;
+        result = _data;
         super.deliverResult(_data);
     }
 }
