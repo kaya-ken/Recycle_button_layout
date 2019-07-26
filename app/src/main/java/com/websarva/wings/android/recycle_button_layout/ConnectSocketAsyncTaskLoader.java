@@ -1,9 +1,7 @@
 package com.websarva.wings.android.recycle_button_layout;
 
 import android.content.Context;
-import android.hardware.SensorEvent;
 import android.support.v4.content.AsyncTaskLoader;
-import android.widget.Toast;
 
 import java.io.DataInputStream;
 import java.io.IOException;
