@@ -1,6 +1,5 @@
 package com.websarva.wings.android.recycle_button_layout;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,23 +15,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.support.v4.app.Fragment;
-import android.widget.Toast;
 
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.Call;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-
-
-public class MainActivity extends AppCompatActivity implements ConfirmDialog.MainFragmentListener {
+public class MainActivity extends AppCompatActivity implements ConfirmOrderDialog.MainFragmentListener {
 
     private String sort_menu[] = {"人気順", "価格順", "新着順"};
     private List<Menu> menuList;
@@ -103,11 +90,11 @@ public class MainActivity extends AppCompatActivity implements ConfirmDialog.Mai
                         final int position = holder_.getAdapterPosition();
                         Menu item = menuList.get(position);
 
-                        ConfirmDialog dialogFragment = new ConfirmDialog();
+                        ConfirmOrderDialog dialogFragment = new ConfirmOrderDialog();
 
                         Bundle bundle = new Bundle();
-                        bundle.putString("Name",item.getMenuName());
-                        bundle.putInt("Price",item.getMenuPrice());
+                        bundle.putString("Name",item.getName());
+                        bundle.putInt("Price",item.getPrice());
                         dialogFragment.setArguments(bundle);
 
 //                        dialog.setTargetFragment(MainActivity, 100);
@@ -153,30 +140,6 @@ public class MainActivity extends AppCompatActivity implements ConfirmDialog.Mai
         @Override
         public void onLoaderReset(@NonNull Loader<String> loader) { }
     };
-
-    @Override
-    public void onActivityResult(final int _requestCode, final int _resultCode, final Intent _data){
-        if(_requestCode == 100){
-            if(_resultCode == DialogInterface.BUTTON_POSITIVE){
-                // positive_button
-                String url_ = "https://www.google.com";
-                OkHttpClient client_ = new OkHttpClient();
-
-                Request request_ = new Request.Builder().url(url_).build();
-                Call call_ = client_.newCall(request_);
-                try {
-                    Response response_ = call_.execute();
-                    System.out.println(response_.body().string());
-                }
-                catch (IOException e){
-                    e.printStackTrace();
-                }
-            }
-            else if(_resultCode == DialogInterface.BUTTON_NEGATIVE){
-                // negative_button
-            }
-        }
-    }
 
     @Override
     public void onNextButtonClicked(){

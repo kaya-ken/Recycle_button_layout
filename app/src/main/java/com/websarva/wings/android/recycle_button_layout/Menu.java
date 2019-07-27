@@ -5,45 +5,45 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Menu{
-    private String MenuName;
-    private int MenuPrice;
-    private int OrderCount;
-    private int AddDate;
-    private int BitImage;
+    private String name;
+    private int price;
+    private int orderedCount;
+    private int addedDate;
+    private int bitmapImage;
 
-    Menu(String _MenuName, int _MenuPrice, int _OrderCount, int _AddDate){
-        this.MenuName = _MenuName;
-        this.MenuPrice = _MenuPrice;
-        this.OrderCount = _OrderCount;
-        this.AddDate = _AddDate;
-        this.BitImage = R.drawable.item05;
+    Menu(String _name, int _price, int _orderedCount, int _addedDate){
+        this.name = _name;
+        this.price = _price;
+        this.orderedCount = _orderedCount;
+        this.addedDate = _addedDate;
+        this.bitmapImage = R.drawable.item05;
     }
 
-    String getMenuName() {
-        return MenuName;
+    String getName() {
+        return this.name;
     }
 
-    int getMenuPrice() {
-        return MenuPrice;
+    int getPrice() {
+        return this.price;
     }
 
-    int getOrderCount() {
-        return OrderCount;
+    int getOrderedCount() {
+        return this.orderedCount;
     }
 
-    int getAddDate() {
-        return AddDate;
+    int getAddedDate() {
+        return this.addedDate;
     }
 
-    int getBitImage(){
-        return BitImage;
+    int getBitmapImage(){
+        return this.bitmapImage;
     }
 
     static void sortByCount(List<Menu> menuList_){
         Collections.sort(menuList_, new Comparator<Menu>() {
             @Override
             public int compare(Menu o1, Menu o2) {
-                return o2.OrderCount - o1.OrderCount;
+                return o2.orderedCount - o1.orderedCount;
             }
         });
     }
@@ -52,7 +52,7 @@ public class Menu{
         Collections.sort(menuList_, new Comparator<Menu>() {
             @Override
             public int compare(Menu o1, Menu o2) {
-                return o2.MenuPrice - o1.MenuPrice;
+                return o2.price - o1.price;
             }
         });
     }
@@ -61,7 +61,7 @@ public class Menu{
         Collections.sort(menuList_, new Comparator<Menu>() {
             @Override
             public int compare(Menu o1, Menu o2) {
-                return o2.AddDate - o1.AddDate;
+                return o2.addedDate - o1.addedDate;
             }
         });
     }

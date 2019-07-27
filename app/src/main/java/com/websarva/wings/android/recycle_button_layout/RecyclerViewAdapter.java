@@ -11,9 +11,7 @@ import java.util.List;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
 
     private List<Menu> list;
-
-
-     RecyclerViewAdapter( List<Menu> _list) {
+    RecyclerViewAdapter( List<Menu> _list) {
         this.list = _list;
     }
 
@@ -27,11 +25,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
     @Override
     public void onBindViewHolder(RecyclerViewHolder _holder, int _pos) {
         Menu data_ = list.get(_pos);
-        _holder.menuView.setText(data_.getMenuName());
-        _holder.priceView.setText("￥"+data_.getMenuPrice());
-        _holder.order_countView.setText("\n注文回数 : "+data_.getOrderCount());
-        _holder.dateView.setText("追加日 :"+data_.getAddDate());
-        _holder.imageView.setImageResource(data_.getBitImage());
+        _holder.menuView.setText(data_.getName());
+        _holder.priceView.setText("￥"+data_.getPrice());
+        _holder.orderedCountView.setText("\n注文回数 : "+data_.getOrderedCount());
+        _holder.dateView.setText("追加日 :"+data_.getAddedDate());
+        _holder.imageView.setImageResource(data_.getBitmapImage());
        // _holder.itemView.setIma
         /*if(!data_.getIcon().equals("null")){
             byte[] decodedByteArray_ = Base64.decode(data_.getIcon(), 0);
