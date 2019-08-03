@@ -16,6 +16,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +29,9 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
     private List<Menu> menuList;
     private RecyclerViewAdapter mAdapter;
     private GridLayoutManager mLayoutManager;
-    private Menu[] menu = new Menu[6];
+//    private Menu[] menu = new Menu[6];
+
+    private Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,20 +44,18 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
         TextView userName = findViewById(R.id.name);
 
         //デバッグ用データ
-        menu[0] = new Menu("バリスタ",20,5,20190601);
-        menu[1] = new Menu("ココアオレ",30,10,20190502);
-        menu[2] = new Menu("抹茶オレ",100,6,20190422);
-        menu[3] = new Menu("チョコチーノ",120,3,20190602);
-        menu[4] = new Menu("レギュラー",55,9,20190614);
-        menu[5] = new Menu("チョコチーノ",60,0,20190622);
-
+//        menu[0] = new Menu("バリスタ",20,5,20190601);
+//        menu[1] = new Menu("ココアオレ",30,10,20190502);
+//        menu[2] = new Menu("抹茶オレ",100,6,20190422);
+//        menu[3] = new Menu("チョコチーノ",120,3,20190602);
+//        menu[4] = new Menu("レギュラー",55,9,20190614);
+//        menu[5] = new Menu("チョコチーノ",60,0,20190622);
         userName.setText(intent.getStringExtra("ID"));
 
         ArrayAdapter<String> adapter
                 = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, sort_menu);
-        menuList = new ArrayList<>();
-
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -109,9 +113,27 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
-        for (Menu menu1 : menu) {
-            addMenu(menu1);
-        }
+        Type listType_ = new TypeToken<List<Menu>>(){}.getType();
+        String json = "[\n" +
+                "    {\n" +
+                "        name:\"バリスタ\",\n" +
+                "        price:20,\n" +
+                "        orderedCount:5,\n" +
+                "        addedDate:20190601\n" +
+                "    }\n" +
+                "]";
+        menuList = gson.fromJson(json, listType_);
+
+        initMenu();
+
+//        for (Menu menu1 : menu) {
+//            addMenu(menu1);
+//        }
+    }
+
+    private void initMenu(){
+        for(Menu menu: menuList)
+            addMenu(menu);
     }
 
     public void addMenu(Menu _menuData){
