@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
     private List<Menu> menuList;
     private RecyclerViewAdapter mAdapter;
     private GridLayoutManager mLayoutManager;
-//    private Menu[] menu = new Menu[6];
+//    private Menu[] menu = new Menu[1];
 
     private Gson gson = new Gson();
 
@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
         final Spinner spinner = findViewById(R.id.spinner);
         RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
         TextView userName = findViewById(R.id.name);
+
+        menuList = new ArrayList<>();
 
         //デバッグ用データ
 //        menu[0] = new Menu("バリスタ",20,5,20190601);
@@ -114,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
         mRecyclerView.setAdapter(mAdapter);
 
         Type listType_ = new TypeToken<List<Menu>>(){}.getType();
+        // ここでサーバからメニューのjsonを受信する
         String json = "[\n" +
                 "    {\n" +
                 "        name:\"バリスタ\",\n" +
@@ -122,18 +125,14 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
                 "        addedDate:20190601\n" +
                 "    }\n" +
                 "]";
-        menuList = gson.fromJson(json, listType_);
 
-        initMenu();
-
-//        for (Menu menu1 : menu) {
-//            addMenu(menu1);
-//        }
+        List receivedMenuList_ = gson.fromJson(json, listType_);
+        initMenu(receivedMenuList_);
     }
 
-    private void initMenu(){
-        for(Menu menu: menuList)
-            addMenu(menu);
+    private void initMenu(List<Menu> _receivedMenuList){
+        for(Menu receivedMenu_: _receivedMenuList)
+            addMenu(receivedMenu_);
     }
 
     public void addMenu(Menu _menuData){
