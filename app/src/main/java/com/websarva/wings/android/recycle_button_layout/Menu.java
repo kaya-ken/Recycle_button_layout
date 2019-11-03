@@ -65,8 +65,4 @@ public class Menu{
             }
         });
     }
-
-    public Menu getData() {
-        return this;
-    }
 }
