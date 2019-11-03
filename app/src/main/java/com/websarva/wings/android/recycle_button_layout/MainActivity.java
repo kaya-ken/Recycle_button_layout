@@ -80,10 +80,8 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
                 mAdapter.notifyDataSetChanged();
             }
 
-            public void onNothingSelected(AdapterView<?> parent) {
-                /*アイテム未選択時の処理*/
-
-            }});
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
 
         mAdapter = new RecyclerViewAdapter(this.menuList){
             @Override
