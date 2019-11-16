@@ -151,13 +151,16 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
     };
 
     @Override
-    public void onNextButtonClicked(){
+    public void onNextButtonClicked(String _menuName){
         String ipAddress_ = "172.20.75.245";
         String mySlackID_ = "NB29979";
 
+        String sending_json =
+                "{" + "slack_id:" + mySlackID_ + "product_id:" + _menuName + "}";
+
         Bundle bundle_ = new Bundle();
         bundle_.putString("IPADDRESS", ipAddress_);
-        bundle_.putString("DATA", mySlackID_);
+        bundle_.putString("DATA", sending_json);
 
         getSupportLoaderManager().restartLoader(0, bundle_, callbacks);
     }
