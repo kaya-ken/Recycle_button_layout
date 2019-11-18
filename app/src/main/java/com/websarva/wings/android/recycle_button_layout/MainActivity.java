@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
     private List<Menu> menuList;
     private RecyclerViewAdapter mAdapter;
     private GridLayoutManager mLayoutManager;
-//    private Menu[] menu = new Menu[1];
 
     private Gson gson = new Gson();
 
@@ -45,13 +44,6 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
 
         menuList = new ArrayList<>();
 
-        //デバッグ用データ
-//        menu[0] = new Menu("バリスタ",20,5,20190601);
-//        menu[1] = new Menu("ココアオレ",30,10,20190502);
-//        menu[2] = new Menu("抹茶オレ",100,6,20190422);
-//        menu[3] = new Menu("チョコチーノ",120,3,20190602);
-//        menu[4] = new Menu("レギュラー",55,9,20190614);
-//        menu[5] = new Menu("チョコチーノ",60,0,20190622);
         userName.setText(intent.getStringExtra("ID"));
 
         ArrayAdapter<String> adapter
@@ -62,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                /*スピナー内アイテム選択時の処理*/
                 switch (position){
                     //人気順でソート
                     case 0:
@@ -90,7 +81,6 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
                 holder_.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //選択したpositionのアイテムを取得
                         final int position = holder_.getAdapterPosition();
                         Menu item = menuList.get(position);
 
@@ -161,13 +151,16 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
     };
 
     @Override
-    public void onNextButtonClicked(){
+    public void onNextButtonClicked(String _menuName){
         String ipAddress_ = "172.20.75.245";
         String mySlackID_ = "NB29979";
 
+        String sending_json =
+                "{" + "slack_id:" + mySlackID_ + "product_id:" + _menuName + "}";
+
         Bundle bundle_ = new Bundle();
         bundle_.putString("IPADDRESS", ipAddress_);
-        bundle_.putString("DATA", mySlackID_);
+        bundle_.putString("DATA", sending_json);
 
         getSupportLoaderManager().restartLoader(0, bundle_, callbacks);
     }

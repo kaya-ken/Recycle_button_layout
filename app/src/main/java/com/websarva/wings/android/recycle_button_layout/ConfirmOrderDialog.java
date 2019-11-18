@@ -12,7 +12,7 @@ import android.support.v4.app.DialogFragment;
 public class ConfirmOrderDialog extends DialogFragment {
 
     public interface MainFragmentListener{
-        void onNextButtonClicked();
+        void onNextButtonClicked(String menuName);
     }
 
     MainFragmentListener mainFragmentListener_;
@@ -41,7 +41,7 @@ public class ConfirmOrderDialog extends DialogFragment {
                 if(getArguments() != null){
                     intent_.putExtras(getArguments());
                 }
-                mainFragmentListener_.onNextButtonClicked();
+                mainFragmentListener_.onNextButtonClicked(menuName);
 
 //                //メニューを閉じてQRコード読み取り画面へ戻る
 //                if (getActivity() != null) {
