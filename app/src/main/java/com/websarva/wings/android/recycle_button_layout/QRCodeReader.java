@@ -10,7 +10,6 @@ import com.google.zxing.integration.android.IntentResult;
 
 public class QRCodeReader extends AppCompatActivity {
 
-    //デバッグ用
     public static Flag mFlag;
 
     @Override
@@ -21,14 +20,11 @@ public class QRCodeReader extends AppCompatActivity {
         setContentView(R.layout.activity_qrcode_reader);
 
         IntentIntegrator integrator = new IntentIntegrator(QRCodeReader.this);
-
-        //フロントカメラを使用する
         integrator.setCameraId(Camera.CameraInfo.CAMERA_FACING_FRONT);
 
         //読み取り音を消す
         integrator.setBeepEnabled(false);
 
-        //スキャン開始
         integrator.initiateScan();
     }
 

@@ -21,7 +21,6 @@ public class ConfirmOrderDialog extends DialogFragment {
         super.onAttach(_activity);
         mainFragmentListener_ = (MainFragmentListener)_activity;
     }
-    // ダイアログが生成された時に呼ばれるメソッド ※必須
     public Dialog onCreateDialog(Bundle savedInstanceState){
         final String productID = getArguments().getString("ProductID");
         final String productName = getArguments().getString("ProductName");
@@ -34,21 +33,11 @@ public class ConfirmOrderDialog extends DialogFragment {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                /*
-                注文時処理をここに書く
-                */
-
                 Intent intent_ = new Intent();
                 if(getArguments() != null){
                     intent_.putExtras(getArguments());
                 }
                 mainFragmentListener_.onNextButtonClicked(productID);
-
-//                //メニューを閉じてQRコード読み取り画面へ戻る
-//                if (getActivity() != null) {
-//                    QRCodeReader.mFlag.setFinishFlg(true);
-//                    getActivity().finish();
-//                }
             }
         });
 

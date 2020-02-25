@@ -25,8 +25,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ConfirmOrderDialog.MainFragmentListener {
 
-    private String sort_menu[] = {"人気順", "価格順", "新着順"};
-    private List<Menu> menuList;
+    private String sort_options[] = {"人気順", "価格順", "新着順"};
+    private List<Product> menu;
     private RecyclerViewAdapter mAdapter;
     private GridLayoutManager mLayoutManager;
 
@@ -45,12 +45,12 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
         RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
         TextView userName = findViewById(R.id.name);
 
-        menuList = new ArrayList<>();
+        menu = new ArrayList<>();
 
         userName.setText(String.format("%sさん", userID));
 
         ArrayAdapter<String> adapter
-                = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, sort_menu);
+                = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, sort_options);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner.setAdapter(adapter);
@@ -60,15 +60,15 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
                 switch (position){
                     //人気順でソート
                     case 0:
-                        Menu.sortByCount(menuList);
+                        Product.sortByCount(menu);
                         break;
                     //価格順でソート
                     case 1:
-                        Menu.sortByPrice(menuList);
+                        Product.sortByPrice(menu);
                         break;
                     //新着順でソート
                     case 2:
-                        Menu.sortByDate(menuList);
+                        Product.sortByDate(menu);
                         break;
                 }
                 mAdapter.notifyDataSetChanged();
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
             public void onNothingSelected(AdapterView<?> parent) { }
         });
 
-        mAdapter = new RecyclerViewAdapter(this.menuList){
+        mAdapter = new RecyclerViewAdapter(this.menu){
             @Override
             public RecyclerViewHolder onCreateViewHolder(ViewGroup _parent, int _viewType) {
                 final RecyclerViewHolder holder_ = super.onCreateViewHolder(_parent, _viewType);
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
                     @Override
                     public void onClick(View v) {
                         final int position = holder_.getAdapterPosition();
-                        Menu item = menuList.get(position);
+                        Product item = menu.get(position);
 
                         ConfirmOrderDialog dialogFragment = new ConfirmOrderDialog();
 
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
-        Type listType_ = new TypeToken<List<Menu>>(){}.getType();
+        Type listType_ = new TypeToken<List<Product>>(){}.getType();
         // ここでメニューの一覧のjsonを読み込み
         String json = "[\n" +
                 "    {\n" +
@@ -122,14 +122,14 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
         initMenu(receivedMenuList_);
     }
 
-    private void initMenu(List<Menu> _receivedMenuList){
-        for(Menu receivedMenu_: _receivedMenuList)
-            addMenu(receivedMenu_);
+    private void initMenu(List<Product> _receivedProductList){
+        for(Product receivedProduct_ : _receivedProductList)
+            addProduct(receivedProduct_);
     }
 
-    public void addMenu(Menu _menuData){
-        menuList.add(_menuData);
-        mAdapter.notifyItemChanged(menuList.size()-1);
+    public void addProduct(Product _productData){
+        menu.add(_productData);
+        mAdapter.notifyItemChanged(menu.size()-1);
     }
 
     public void buttonClick(View view){
