@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 
 
@@ -21,6 +22,7 @@ public class ConfirmOrderDialog extends DialogFragment {
         super.onAttach(_activity);
         mainFragmentListener_ = (MainFragmentListener)_activity;
     }
+    @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState){
         final String productID = getArguments().getString("ProductID");
         final String productName = getArguments().getString("ProductName");

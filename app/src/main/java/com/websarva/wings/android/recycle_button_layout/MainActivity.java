@@ -24,11 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ConfirmOrderDialog.MainFragmentListener {
-
-    private String sort_options[] = {"人気順", "価格順", "新着順"};
     private List<Product> menu;
     private RecyclerViewAdapter mAdapter;
-    private GridLayoutManager mLayoutManager;
 
     private Gson gson = new Gson();
 
@@ -36,6 +33,9 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        String sort_options[] = {"人気順", "価格順", "新着順"};
+        GridLayoutManager mLayoutManager;
+
         super.onCreate(savedInstanceState);
         final Intent intent = getIntent();
         userID = intent.getStringExtra("ID");
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
 
     @Override
     public void onNextButtonClicked(String _productID){
-        String ipAddress_ = "";
+        String ipAddress_ = "192.168.1.30";
 
         String sending_json =
                 "{" + "\"slack_id\":" + "\"" + userID + "\","
