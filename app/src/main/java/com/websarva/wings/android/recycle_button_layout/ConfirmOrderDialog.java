@@ -23,12 +23,13 @@ public class ConfirmOrderDialog extends DialogFragment {
     }
     // ダイアログが生成された時に呼ばれるメソッド ※必須
     public Dialog onCreateDialog(Bundle savedInstanceState){
-        final String menuName = getArguments().getString("Name");
-        int menuPrice = getArguments().getInt("Price");
+        final String productID = getArguments().getString("ProductID");
+        final String productName = getArguments().getString("ProductName");
+        int productPrice = getArguments().getInt("ProductPrice");
         AlertDialog.Builder confirm = new AlertDialog.Builder(getActivity());
 
         confirm.setTitle("以下のメニューを注文します．");
-        confirm.setMessage("商品名 : "+menuName+"\n価格 : ￥"+menuPrice);
+        confirm.setMessage("商品名 : " + productName + "\n価格 : ￥" + productPrice);
         confirm.setPositiveButton("OK", new DialogInterface.OnClickListener(){
 
             @Override
@@ -41,7 +42,7 @@ public class ConfirmOrderDialog extends DialogFragment {
                 if(getArguments() != null){
                     intent_.putExtras(getArguments());
                 }
-                mainFragmentListener_.onNextButtonClicked(menuName);
+                mainFragmentListener_.onNextButtonClicked(productID);
 
 //                //メニューを閉じてQRコード読み取り画面へ戻る
 //                if (getActivity() != null) {

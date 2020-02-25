@@ -5,18 +5,24 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Menu{
+    private String id;
     private String name;
     private int price;
     private int orderedCount;
     private int addedDate;
     private int bitmapImage;
 
-    Menu(String _name, int _price, int _orderedCount, int _addedDate){
+    Menu(String _id, String _name, int _price, int _orderedCount, int _addedDate){
+        this.id = _id;
         this.name = _name;
         this.price = _price;
         this.orderedCount = _orderedCount;
         this.addedDate = _addedDate;
         this.bitmapImage = R.drawable.item05;
+    }
+
+    String getId(){
+        return this.id;
     }
 
     String getName() {

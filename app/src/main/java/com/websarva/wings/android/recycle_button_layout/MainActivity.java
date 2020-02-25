@@ -32,10 +32,13 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
 
     private Gson gson = new Gson();
 
+    private String userID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Intent intent = getIntent();
+        userID = intent.getStringExtra("ID");
 
         setContentView(R.layout.activity_main);
         final Spinner spinner = findViewById(R.id.spinner);
@@ -44,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
 
         menuList = new ArrayList<>();
 
-        userName.setText(String.format("%sさん", intent.getStringExtra("ID")));
+        userName.setText(String.format("%sさん", userID));
 
         ArrayAdapter<String> adapter
                 = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, sort_menu);
@@ -87,11 +90,11 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
                         ConfirmOrderDialog dialogFragment = new ConfirmOrderDialog();
 
                         Bundle bundle = new Bundle();
-                        bundle.putString("Name",item.getName());
-                        bundle.putInt("Price",item.getPrice());
+                        bundle.putString("ProductID", item.getId());
+                        bundle.putString("ProductName", item.getName());
+                        bundle.putInt("ProductPrice", item.getPrice());
                         dialogFragment.setArguments(bundle);
 
-//                        dialog.setTargetFragment(MainActivity, 100);
                         dialogFragment.show(getSupportFragmentManager(), "purchase_confirm_dialog");
                     }
                 });
@@ -104,9 +107,10 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
         mRecyclerView.setAdapter(mAdapter);
 
         Type listType_ = new TypeToken<List<Menu>>(){}.getType();
-        // ここでサーバからメニューのjsonを受信する
+        // ここでメニューの一覧のjsonを読み込み
         String json = "[\n" +
                 "    {\n" +
+                "        id:\"001\",\n" +
                 "        name:\"バリスタ\",\n" +
                 "        price:20,\n" +
                 "        orderedCount:5,\n" +
@@ -151,12 +155,12 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
     };
 
     @Override
-    public void onNextButtonClicked(String _menuName){
+    public void onNextButtonClicked(String _productID){
         String ipAddress_ = "";
-        String mySlackID_ = "NB29979";
 
         String sending_json =
-                "{" + "slack_id:" + mySlackID_ + "product_id:" + _menuName + "}";
+                "{" + "\"slack_id\":" + "\"" + userID + "\","
+                       + "\"product_id\":" + "\"" + _productID + "\"}";
 
         Bundle bundle_ = new Bundle();
         bundle_.putString("IPADDRESS", ipAddress_);
