@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
 
         menuList = new ArrayList<>();
 
-        userName.setText(intent.getStringExtra("ID"));
+        userName.setText(String.format("%sさん", intent.getStringExtra("ID")));
 
         ArrayAdapter<String> adapter
                 = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, sort_menu);
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
 
     @Override
     public void onNextButtonClicked(String _menuName){
-        String ipAddress_ = "172.20.75.245";
+        String ipAddress_ = "";
         String mySlackID_ = "NB29979";
 
         String sending_json =

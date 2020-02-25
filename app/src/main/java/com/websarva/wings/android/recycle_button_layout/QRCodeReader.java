@@ -11,7 +11,6 @@ import com.google.zxing.integration.android.IntentResult;
 public class QRCodeReader extends AppCompatActivity {
 
     //デバッグ用
-    private String ID = "名島 大生";
     public static Flag mFlag;
 
     @Override
@@ -39,8 +38,7 @@ public class QRCodeReader extends AppCompatActivity {
         if(result != null) {
             //QRコードからIDを取得し，メニュー画面を表示
             Intent intent =new Intent(QRCodeReader.this,MainActivity.class);
-            //intent.putExtra("ID",result.getContents());
-            intent.putExtra("ID",ID+"　さん");
+            intent.putExtra("ID",result.getContents());
             startActivity(intent);
         } else {
             super.onActivityResult(requestCode, resultCode, data);
