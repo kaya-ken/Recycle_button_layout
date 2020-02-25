@@ -45,6 +45,10 @@ public class Product {
         return this.bitmapImage;
     }
 
+    void setBitmapImage(int _bitmapID){
+        this.bitmapImage = _bitmapID;
+    }
+
     static void sortByCount(List<Product> _menu){
         Collections.sort(_menu, new Comparator<Product>() {
             @Override

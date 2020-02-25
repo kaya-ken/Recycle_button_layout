@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        String sort_options[] = {"人気順", "価格順", "新着順"};
+        String sortOptions[] = {"人気順", "価格順", "新着順"};
         GridLayoutManager mLayoutManager;
 
         super.onCreate(savedInstanceState);
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
         userName.setText(String.format("%sさん", userID));
 
         ArrayAdapter<String> adapter
-                = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, sort_options);
+                = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, sortOptions);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner.setAdapter(adapter);
@@ -123,8 +123,10 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
     }
 
     private void initMenu(List<Product> _receivedProductList){
-        for(Product receivedProduct_ : _receivedProductList)
+        for(Product receivedProduct_ : _receivedProductList) {
+            receivedProduct_.setBitmapImage(R.drawable.item05);
             addProduct(receivedProduct_);
+        }
     }
 
     public void addProduct(Product _productData){
