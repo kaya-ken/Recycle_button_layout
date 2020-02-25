@@ -13,7 +13,7 @@ import android.support.v4.app.DialogFragment;
 public class ConfirmOrderDialog extends DialogFragment {
 
     public interface MainFragmentListener{
-        void onNextButtonClicked(String menuName);
+        void onNextButtonClicked(int productPosition, String productName);
     }
 
     MainFragmentListener mainFragmentListener_;
@@ -26,7 +26,8 @@ public class ConfirmOrderDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState){
         final String productID = getArguments().getString("ProductID");
         final String productName = getArguments().getString("ProductName");
-        int productPrice = getArguments().getInt("ProductPrice");
+        final int productPrice = getArguments().getInt("ProductPrice");
+        final int productPosition = getArguments().getInt("ProductPosition");
         AlertDialog.Builder confirm = new AlertDialog.Builder(getActivity());
 
         confirm.setTitle("以下のメニューを注文します．");
@@ -39,7 +40,7 @@ public class ConfirmOrderDialog extends DialogFragment {
                 if(getArguments() != null){
                     intent_.putExtras(getArguments());
                 }
-                mainFragmentListener_.onNextButtonClicked(productID);
+                mainFragmentListener_.onNextButtonClicked(productPosition, productID);
             }
         });
 

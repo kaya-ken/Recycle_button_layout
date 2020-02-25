@@ -30,6 +30,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
         _holder.dateView.setText(String.format("追加日 : %d", data_.getAddedDate()));
         _holder.imageView.setImageResource(data_.getBitmapImage());
     }
+    public void onBindViewHolder(RecyclerViewHolder _holder, int _pos, List<Object> _payload) {
+        if (!_payload.isEmpty())
+            _holder.orderedCountView.setText(String.format("\n注文回数 : %d", list.get(_pos).getOrderedCount()));
+        else onBindViewHolder(_holder, _pos);
+    }
 
      @Override
      public int getItemCount() {

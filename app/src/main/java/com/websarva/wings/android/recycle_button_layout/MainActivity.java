@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
                         bundle.putString("ProductID", item.getId());
                         bundle.putString("ProductName", item.getName());
                         bundle.putInt("ProductPrice", item.getPrice());
+                        bundle.putInt("ProductPosition", position);
                         dialogFragment.setArguments(bundle);
 
                         dialogFragment.show(getSupportFragmentManager(), "purchase_confirm_dialog");
@@ -113,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
                 "        id:\"001\",\n" +
                 "        name:\"バリスタ\",\n" +
                 "        price:20,\n" +
-                "        orderedCount:5,\n" +
+                "        orderedCount:0,\n" +
                 "        addedDate:20190601\n" +
                 "    }\n" +
                 "]";
@@ -157,8 +158,8 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
     };
 
     @Override
-    public void onNextButtonClicked(String _productID){
-        String ipAddress_ = "192.168.1.30";
+    public void onNextButtonClicked(int _productPosition, String _productID){
+        String ipAddress_ = "";
 
         String sending_json =
                 "{" + "\"slack_id\":" + "\"" + userID + "\","
@@ -167,6 +168,9 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
         Bundle bundle_ = new Bundle();
         bundle_.putString("IPADDRESS", ipAddress_);
         bundle_.putString("DATA", sending_json);
+
+        menu.get(_productPosition).increaseOrderedCount();
+        mAdapter.notifyItemChanged(_productPosition, true);
 
         getSupportLoaderManager().restartLoader(0, bundle_, callbacks);
     }

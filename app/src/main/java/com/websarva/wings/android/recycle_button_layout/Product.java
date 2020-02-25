@@ -33,9 +33,8 @@ public class Product {
         return this.price;
     }
 
-    int getOrderedCount() {
-        return this.orderedCount;
-    }
+    int getOrderedCount() { return this.orderedCount; }
+    void increaseOrderedCount(){ ++this.orderedCount; }
 
     int getAddedDate() {
         return this.addedDate;
