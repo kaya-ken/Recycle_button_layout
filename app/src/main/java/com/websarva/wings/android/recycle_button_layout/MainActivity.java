@@ -1,7 +1,9 @@
 package com.websarva.wings.android.recycle_button_layout;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
@@ -107,18 +109,21 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
-        Type listType_ = new TypeToken<List<Product>>(){}.getType();
-        // ここでメニューの一覧のjsonを読み込み
-        String json = "[\n" +
-                "    {\n" +
-                "        id:\"001\",\n" +
-                "        name:\"バリスタ\",\n" +
-                "        price:20,\n" +
-                "        orderedCount:0,\n" +
-                "        addedDate:20190601\n" +
-                "    }\n" +
-                "]";
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String json = pref.getString("MENUDATA", "");
 
+        if(json.equals("[null]"))
+            json = "[\n" +
+                    "    {\n" +
+                    "        id:\"001\",\n" +
+                    "        name:\"バリスタ\",\n" +
+                    "        price:20,\n" +
+                    "        orderedCount:0,\n" +
+                    "        addedDate:20190601\n" +
+                    "    }\n" +
+                    "]";
+
+        Type listType_ = new TypeToken<List<Product>>(){}.getType();
         List receivedMenuList_ = gson.fromJson(json, listType_);
         initMenu(receivedMenuList_);
     }
@@ -140,21 +145,31 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
         finish();
     }
 
-    private final LoaderManager.LoaderCallbacks<String> callbacks = new LoaderManager.LoaderCallbacks<String>() {
+    private final LoaderManager.LoaderCallbacks<LoggingResult> callbacks = new LoaderManager.LoaderCallbacks<LoggingResult>() {
         @NonNull
         @Override
-        public Loader<String> onCreateLoader(int i, @Nullable Bundle bundle) {
+        public Loader<LoggingResult> onCreateLoader(int i, @Nullable Bundle bundle) {
             return new ConnectSocketAsyncTaskLoader(getApplicationContext(),
+                    bundle.getInt("POSITION"),
                     bundle.getString("IPADDRESS"), bundle.getString("DATA"));
         }
 
         @Override
-        public void onLoadFinished(@NonNull Loader<String> loader, String s) {
+        public void onLoadFinished(@NonNull Loader<LoggingResult> loader, LoggingResult res) {
             getSupportLoaderManager().destroyLoader(loader.getId());
+
+            if(res.status.equals("ok")) {
+                menu.get(res.position).increaseOrderedCount();
+                mAdapter.notifyItemChanged(res.position, true);
+
+                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                String json = gson.toJson(menu);
+                pref.edit().putString("MENUDATA", json).apply();
+            }
         }
 
         @Override
-        public void onLoaderReset(@NonNull Loader<String> loader) { }
+        public void onLoaderReset(@NonNull Loader<LoggingResult> loader) { }
     };
 
     @Override
@@ -166,11 +181,9 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
                        + "\"product_id\":" + "\"" + _productID + "\"}";
 
         Bundle bundle_ = new Bundle();
+        bundle_.putInt("POSITION", _productPosition);
         bundle_.putString("IPADDRESS", ipAddress_);
         bundle_.putString("DATA", sending_json);
-
-        menu.get(_productPosition).increaseOrderedCount();
-        mAdapter.notifyItemChanged(_productPosition, true);
 
         getSupportLoaderManager().restartLoader(0, bundle_, callbacks);
     }
