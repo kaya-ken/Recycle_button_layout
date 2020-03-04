@@ -10,35 +10,30 @@ import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
 
-    private List<Menu> list;
-    RecyclerViewAdapter( List<Menu> _list) {
+    private List<Product> list;
+    RecyclerViewAdapter( List<Product> _list) {
         this.list = _list;
     }
 
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup _parent, int _viewType) {
         View inflate = LayoutInflater.from(_parent.getContext()).inflate(R.layout.row, _parent, false);
-        RecyclerViewHolder holder_ = new RecyclerViewHolder(inflate);
-        return holder_;
+        return  new RecyclerViewHolder(inflate);
     }
 
     @Override
     public void onBindViewHolder(RecyclerViewHolder _holder, int _pos) {
-        Menu data_ = list.get(_pos);
+        Product data_ = list.get(_pos);
         _holder.menuView.setText(data_.getName());
-        _holder.priceView.setText("￥"+data_.getPrice());
-        _holder.orderedCountView.setText("\n注文回数 : "+data_.getOrderedCount());
-        _holder.dateView.setText("追加日 :"+data_.getAddedDate());
+        _holder.priceView.setText(String.format("￥%s", data_.getPrice()));
+        _holder.orderedCountView.setText(String.format("\n注文回数 : %d", data_.getOrderedCount()));
+        _holder.dateView.setText(String.format("追加日 : %d", data_.getAddedDate()));
         _holder.imageView.setImageResource(data_.getBitmapImage());
-       // _holder.itemView.setIma
-        /*if(!data_.getIcon().equals("null")){
-            byte[] decodedByteArray_ = Base64.decode(data_.getIcon(), 0);
-            Bitmap receivedBmp_ = BitmapFactory.decodeByteArray(decodedByteArray_, 0, decodedByteArray_.length);
-            Bitmap resourceBmp_ = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher);
-
-            receivedBmp_ = Bitmap.createScaledBitmap(receivedBmp_, resourceBmp_.getWidth(), resourceBmp_.getHeight(), true);
-            _holder.iconView.setImageBitmap(receivedBmp_);
-        }*/
+    }
+    public void onBindViewHolder(RecyclerViewHolder _holder, int _pos, List<Object> _payload) {
+        if (!_payload.isEmpty())
+            _holder.orderedCountView.setText(String.format("\n注文回数 : %d", list.get(_pos).getOrderedCount()));
+        else onBindViewHolder(_holder, _pos);
     }
 
      @Override

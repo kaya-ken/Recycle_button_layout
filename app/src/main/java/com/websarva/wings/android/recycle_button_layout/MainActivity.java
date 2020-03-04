@@ -1,7 +1,9 @@
 package com.websarva.wings.android.recycle_button_layout;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
@@ -24,30 +26,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ConfirmOrderDialog.MainFragmentListener {
-
-    private String sort_menu[] = {"人気順", "価格順", "新着順"};
-    private List<Menu> menuList;
+    private List<Product> menu;
     private RecyclerViewAdapter mAdapter;
-    private GridLayoutManager mLayoutManager;
 
     private Gson gson = new Gson();
 
+    private String userID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        String sortOptions[] = {"人気順", "価格順", "新着順"};
+        GridLayoutManager mLayoutManager;
+
         super.onCreate(savedInstanceState);
         final Intent intent = getIntent();
+        userID = intent.getStringExtra("ID");
 
         setContentView(R.layout.activity_main);
         final Spinner spinner = findViewById(R.id.spinner);
         RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
         TextView userName = findViewById(R.id.name);
 
-        menuList = new ArrayList<>();
+        menu = new ArrayList<>();
 
-        userName.setText(intent.getStringExtra("ID"));
+        userName.setText(String.format("%sさん", userID));
 
         ArrayAdapter<String> adapter
-                = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, sort_menu);
+                = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, sortOptions);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner.setAdapter(adapter);
@@ -57,15 +62,15 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
                 switch (position){
                     //人気順でソート
                     case 0:
-                        Menu.sortByCount(menuList);
+                        Product.sortByCount(menu);
                         break;
                     //価格順でソート
                     case 1:
-                        Menu.sortByPrice(menuList);
+                        Product.sortByPrice(menu);
                         break;
                     //新着順でソート
                     case 2:
-                        Menu.sortByDate(menuList);
+                        Product.sortByDate(menu);
                         break;
                 }
                 mAdapter.notifyDataSetChanged();
@@ -74,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
             public void onNothingSelected(AdapterView<?> parent) { }
         });
 
-        mAdapter = new RecyclerViewAdapter(this.menuList){
+        mAdapter = new RecyclerViewAdapter(this.menu){
             @Override
             public RecyclerViewHolder onCreateViewHolder(ViewGroup _parent, int _viewType) {
                 final RecyclerViewHolder holder_ = super.onCreateViewHolder(_parent, _viewType);
@@ -82,16 +87,17 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
                     @Override
                     public void onClick(View v) {
                         final int position = holder_.getAdapterPosition();
-                        Menu item = menuList.get(position);
+                        Product item = menu.get(position);
 
                         ConfirmOrderDialog dialogFragment = new ConfirmOrderDialog();
 
                         Bundle bundle = new Bundle();
-                        bundle.putString("Name",item.getName());
-                        bundle.putInt("Price",item.getPrice());
+                        bundle.putString("ProductID", item.getId());
+                        bundle.putString("ProductName", item.getName());
+                        bundle.putInt("ProductPrice", item.getPrice());
+                        bundle.putInt("ProductPosition", position);
                         dialogFragment.setArguments(bundle);
 
-//                        dialog.setTargetFragment(MainActivity, 100);
                         dialogFragment.show(getSupportFragmentManager(), "purchase_confirm_dialog");
                     }
                 });
@@ -103,29 +109,35 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
-        Type listType_ = new TypeToken<List<Menu>>(){}.getType();
-        // ここでサーバからメニューのjsonを受信する
-        String json = "[\n" +
-                "    {\n" +
-                "        name:\"バリスタ\",\n" +
-                "        price:20,\n" +
-                "        orderedCount:5,\n" +
-                "        addedDate:20190601\n" +
-                "    }\n" +
-                "]";
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String json = pref.getString("MENUDATA", "");
 
+        if(json.equals("[null]"))
+            json = "[\n" +
+                    "    {\n" +
+                    "        id:\"001\",\n" +
+                    "        name:\"バリスタ\",\n" +
+                    "        price:20,\n" +
+                    "        orderedCount:0,\n" +
+                    "        addedDate:20190601\n" +
+                    "    }\n" +
+                    "]";
+
+        Type listType_ = new TypeToken<List<Product>>(){}.getType();
         List receivedMenuList_ = gson.fromJson(json, listType_);
         initMenu(receivedMenuList_);
     }
 
-    private void initMenu(List<Menu> _receivedMenuList){
-        for(Menu receivedMenu_: _receivedMenuList)
-            addMenu(receivedMenu_);
+    private void initMenu(List<Product> _receivedProductList){
+        for(Product receivedProduct_ : _receivedProductList) {
+            receivedProduct_.setBitmapImage(R.drawable.item05);
+            addProduct(receivedProduct_);
+        }
     }
 
-    public void addMenu(Menu _menuData){
-        menuList.add(_menuData);
-        mAdapter.notifyItemChanged(menuList.size()-1);
+    public void addProduct(Product _productData){
+        menu.add(_productData);
+        mAdapter.notifyItemChanged(menu.size()-1);
     }
 
     public void buttonClick(View view){
@@ -133,32 +145,43 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
         finish();
     }
 
-    private final LoaderManager.LoaderCallbacks<String> callbacks = new LoaderManager.LoaderCallbacks<String>() {
+    private final LoaderManager.LoaderCallbacks<LoggingResult> callbacks = new LoaderManager.LoaderCallbacks<LoggingResult>() {
         @NonNull
         @Override
-        public Loader<String> onCreateLoader(int i, @Nullable Bundle bundle) {
+        public Loader<LoggingResult> onCreateLoader(int i, @Nullable Bundle bundle) {
             return new ConnectSocketAsyncTaskLoader(getApplicationContext(),
+                    bundle.getInt("POSITION"),
                     bundle.getString("IPADDRESS"), bundle.getString("DATA"));
         }
 
         @Override
-        public void onLoadFinished(@NonNull Loader<String> loader, String s) {
+        public void onLoadFinished(@NonNull Loader<LoggingResult> loader, LoggingResult res) {
             getSupportLoaderManager().destroyLoader(loader.getId());
+
+            if(res.status.equals("ok")) {
+                menu.get(res.position).increaseOrderedCount();
+                mAdapter.notifyItemChanged(res.position, true);
+
+                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                String json = gson.toJson(menu);
+                pref.edit().putString("MENUDATA", json).apply();
+            }
         }
 
         @Override
-        public void onLoaderReset(@NonNull Loader<String> loader) { }
+        public void onLoaderReset(@NonNull Loader<LoggingResult> loader) { }
     };
 
     @Override
-    public void onNextButtonClicked(String _menuName){
-        String ipAddress_ = "172.20.75.245";
-        String mySlackID_ = "NB29979";
+    public void onNextButtonClicked(int _productPosition, String _productID){
+        String ipAddress_ = "";
 
         String sending_json =
-                "{" + "slack_id:" + mySlackID_ + "product_id:" + _menuName + "}";
+                "{" + "\"slack_id\":" + "\"" + userID + "\","
+                       + "\"product_id\":" + "\"" + _productID + "\"}";
 
         Bundle bundle_ = new Bundle();
+        bundle_.putInt("POSITION", _productPosition);
         bundle_.putString("IPADDRESS", ipAddress_);
         bundle_.putString("DATA", sending_json);
 

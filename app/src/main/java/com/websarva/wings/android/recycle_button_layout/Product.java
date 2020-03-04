@@ -4,19 +4,25 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class Menu{
+public class Product {
+    private String id;
     private String name;
     private int price;
     private int orderedCount;
     private int addedDate;
     private int bitmapImage;
 
-    Menu(String _name, int _price, int _orderedCount, int _addedDate){
+    Product(String _id, String _name, int _price, int _orderedCount, int _addedDate){
+        this.id = _id;
         this.name = _name;
         this.price = _price;
         this.orderedCount = _orderedCount;
         this.addedDate = _addedDate;
         this.bitmapImage = R.drawable.item05;
+    }
+
+    String getId(){
+        return this.id;
     }
 
     String getName() {
@@ -27,9 +33,8 @@ public class Menu{
         return this.price;
     }
 
-    int getOrderedCount() {
-        return this.orderedCount;
-    }
+    int getOrderedCount() { return this.orderedCount; }
+    void increaseOrderedCount(){ ++this.orderedCount; }
 
     int getAddedDate() {
         return this.addedDate;
@@ -39,28 +44,32 @@ public class Menu{
         return this.bitmapImage;
     }
 
-    static void sortByCount(List<Menu> menuList_){
-        Collections.sort(menuList_, new Comparator<Menu>() {
+    void setBitmapImage(int _bitmapID){
+        this.bitmapImage = _bitmapID;
+    }
+
+    static void sortByCount(List<Product> _menu){
+        Collections.sort(_menu, new Comparator<Product>() {
             @Override
-            public int compare(Menu o1, Menu o2) {
+            public int compare(Product o1, Product o2) {
                 return o2.orderedCount - o1.orderedCount;
             }
         });
     }
 
-    static void sortByPrice(List<Menu> menuList_){
-        Collections.sort(menuList_, new Comparator<Menu>() {
+    static void sortByPrice(List<Product> _menu){
+        Collections.sort(_menu, new Comparator<Product>() {
             @Override
-            public int compare(Menu o1, Menu o2) {
+            public int compare(Product o1, Product o2) {
                 return o2.price - o1.price;
             }
         });
     }
 
-    static void sortByDate(List<Menu> menuList_){
-        Collections.sort(menuList_, new Comparator<Menu>() {
+    static void sortByDate(List<Product> _menu){
+        Collections.sort(_menu, new Comparator<Product>() {
             @Override
-            public int compare(Menu o1, Menu o2) {
+            public int compare(Product o1, Product o2) {
                 return o2.addedDate - o1.addedDate;
             }
         });
