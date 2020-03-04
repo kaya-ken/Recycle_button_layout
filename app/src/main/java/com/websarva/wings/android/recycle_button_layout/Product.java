@@ -7,18 +7,20 @@ import java.util.List;
 public class Product {
     private String id;
     private String name;
+    public String imageName;
     private int price;
     private int orderedCount;
     private int addedDate;
     private int bitmapImage;
 
-    Product(String _id, String _name, int _price, int _orderedCount, int _addedDate){
+    Product(String _id, String _name, String _imageName, int _price, int _orderedCount, int _addedDate){
         this.id = _id;
         this.name = _name;
+        this.imageName = _imageName;
         this.price = _price;
         this.orderedCount = _orderedCount;
         this.addedDate = _addedDate;
-        this.bitmapImage = R.drawable.item05;
+        this.bitmapImage = R.drawable.barisuta;
     }
 
     String getId(){

@@ -1,9 +1,66 @@
 [
   {
-    id:"001",
+    id:"893",
     name:"バリスタ",
-    price:20,
+    imageName:"barisuta",
+    price:25,
     orderedCount:0,
-    addedDate:20190601
+    addedDate:20200304
+  },
+  {
+    id:"143",
+    name:"ブライト無味",
+    imageName:"ajinashi",
+    price:15,
+    orderedCount:0,
+    addedDate:20200304
+  },
+  {
+    id:"889",
+    name:"ブライト味付き",
+    imageName:"ajitsuki",
+    price:25,
+    orderedCount:0,
+    addedDate:20200304
+  },
+  {
+    id:"514",
+    name:"宇治抹茶",
+    imageName:"matcha",
+    price:65,
+    orderedCount:0,
+    addedDate:20200304
+  },
+  {
+    id:"810",
+    name:"チョコチーノ",
+    imageName:"choco",
+    price:110,
+    orderedCount:0,
+    addedDate:20200304
+  },
+  {
+    id:"114",
+    name:"アイスカプチーノ",
+    imageName:"ice",
+    price:110,
+    orderedCount:0,
+    addedDate:20200304
+  },
+  {
+    id:"464",
+    name:"ココア",
+    imageName:"cocoa",
+    price:25,
+    orderedCount:0,
+    addedDate:20200304
+  },
+  {
+    id:"000",
+    name:"リッチブレンド",
+    imageName:"richblend",
+    price:55,
+    orderedCount:0,
+    addedDate:20200304
   }
 ]
