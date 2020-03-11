@@ -2,6 +2,7 @@ package com.websarva.wings.android.recycle_button_layout;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -21,6 +22,10 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -111,26 +116,44 @@ public class MainActivity extends AppCompatActivity implements ConfirmOrderDialo
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String json = pref.getString("MENUDATA", "");
-
-        if(json.equals("[null]"))
-            json = "[\n" +
-                    "    {\n" +
-                    "        id:\"001\",\n" +
-                    "        name:\"バリスタ\",\n" +
-                    "        price:20,\n" +
-                    "        orderedCount:0,\n" +
-                    "        addedDate:20190601\n" +
-                    "    }\n" +
-                    "]";
-
         Type listType_ = new TypeToken<List<Product>>(){}.getType();
-        List receivedMenuList_ = gson.fromJson(json, listType_);
+        List<Product> receivedMenuList_;
+
+        if(json.equals("")) {
+            try {
+                Resources res_ = this.getResources();
+                InputStream inputStream_ = res_.openRawResource(R.raw.menu);
+                BufferedReader reader_ = new BufferedReader(new InputStreamReader(inputStream_));
+
+                String str = "";
+                while((str = reader_.readLine()) != null){
+                    json += str;
+                }
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        receivedMenuList_ = gson.fromJson(json, listType_);
         initMenu(receivedMenuList_);
+    }
+
+    private static int getResID(String _resName, Class<?> _c){
+        try{
+            Field idField_ = _c.getDeclaredField(_resName);
+            return idField_.getInt(idField_);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     private void initMenu(List<Product> _receivedProductList){
         for(Product receivedProduct_ : _receivedProductList) {
-            receivedProduct_.setBitmapImage(R.drawable.item05);
+            int resID_ = getResID(receivedProduct_.imageName, R.drawable.class);
+            receivedProduct_.setBitmapImage(resID_);
             addProduct(receivedProduct_);
         }
     }
