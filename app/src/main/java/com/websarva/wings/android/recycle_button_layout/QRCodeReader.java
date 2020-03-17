@@ -22,9 +22,6 @@ public class QRCodeReader extends AppCompatActivity {
         IntentIntegrator integrator = new IntentIntegrator(QRCodeReader.this);
         integrator.setCameraId(Camera.CameraInfo.CAMERA_FACING_FRONT);
 
-        //読み取り音を消す
-        //integrator.setBeepEnabled(false);
-
         integrator.initiateScan();
     }
 
