@@ -23,7 +23,7 @@ public class QRCodeReader extends AppCompatActivity {
         integrator.setCameraId(Camera.CameraInfo.CAMERA_FACING_FRONT);
 
         //読み取り音を消す
-        integrator.setBeepEnabled(false);
+        //integrator.setBeepEnabled(false);
 
         integrator.initiateScan();
     }
